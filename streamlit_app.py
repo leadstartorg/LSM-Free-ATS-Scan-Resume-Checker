@@ -45,7 +45,7 @@ elif ai_model_choice == 'OpenAI':
 # --- Generic AI Response Functions ---
 
 @st.cache_data()
-def get_ai_response(model_choice, ai_model_instance, input_prompt, pdf_content, user_input, additional_params=None):
+def get_ai_response(model_choice, _ai_model_instance, input_prompt, pdf_content, user_input, additional_params=None):
     """
     Generates a text response from the selected AI model (Gemini or OpenAI).
     """
@@ -55,14 +55,14 @@ def get_ai_response(model_choice, ai_model_instance, input_prompt, pdf_content, 
             full_prompt += f"\n\n--- {key} ---\n{value}"
 
     if model_choice == 'Google Gemini':
-        if ai_model_instance:
-            response = ai_model_instance.generate_content([full_prompt, pdf_content[0], user_input])
+        if _ai_model_instance: # Use the underscore here too
+            response = _ai_model_instance.generate_content([full_prompt, pdf_content[0], user_input])
             return response.text
         else:
             st.error("Gemini model not initialized. Please check API key.")
             return "Error: Gemini model not available."
     elif model_choice == 'OpenAI':
-        if ai_model_instance:
+        if _ai_model_instance: # And here
             # For OpenAI's Vision models (like gpt-4o), you need to encode image data
             # OpenAI's chat completions API expects messages in a specific format
             # Convert PDF image to base64 for OpenAI Vision models
@@ -79,8 +79,7 @@ def get_ai_response(model_choice, ai_model_instance, input_prompt, pdf_content, 
                 }
             ]
             try:
-                # Using gpt-4o as it supports multimodal input. You might use gpt-4o-mini for cheaper calls.
-                completion = ai_model_instance.chat.completions.create(
+                completion = _ai_model_instance.chat.completions.create( # And here
                     model="gpt-4o", # or "gpt-4o-mini"
                     messages=messages,
                     max_tokens=2000 # Adjust as needed
@@ -94,9 +93,8 @@ def get_ai_response(model_choice, ai_model_instance, input_prompt, pdf_content, 
             return "Error: OpenAI model not available."
     return "Error: No AI model selected or initialized."
 
-
 @st.cache_data()
-def get_ai_response_keywords(model_choice, ai_model_instance, input_prompt, pdf_content, user_input, additional_params=None):
+def get_ai_response_keywords(model_choice, _ai_model_instance, input_prompt, pdf_content, user_input, additional_params=None):
     """
     Generates a JSON response with keywords from the selected AI model.
     """
@@ -105,7 +103,8 @@ def get_ai_response_keywords(model_choice, ai_model_instance, input_prompt, pdf_
         for key, value in additional_params.items():
             full_prompt += f"\n\n--- {key} ---\n{value}"
 
-    response_text = get_ai_response(model_choice, ai_model_instance, input_prompt, pdf_content, user_input, additional_params)
+    # Note: We pass _ai_model_instance here as well
+    response_text = get_ai_response(model_choice, _ai_model_instance, input_prompt, pdf_content, user_input, additional_params)
 
     try:
         json_string = response_text.strip()
@@ -119,7 +118,6 @@ def get_ai_response_keywords(model_choice, ai_model_instance, input_prompt, pdf_
         st.write("Raw response for debugging:")
         st.code(response_text)
         return {}
-
 
 @st.cache_data()
 def input_pdf_setup(uploaded_file):

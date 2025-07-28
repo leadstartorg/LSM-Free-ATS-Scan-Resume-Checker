@@ -454,21 +454,3 @@ elif submit3:
                 st.json({"match_analysis": response})
         except (FileNotFoundError, ValueError) as e:
             st.error(f"Error: {e}")
-
----
-## LSM Important Disclaimers
-
-**Subjective Disclaimer:** The analysis provided by this tool is based on artificial intelligence and its interpretation of the provided resume and job description. While efforts are made to ensure accuracy and relevance, the results should be considered **subjective** and for informational purposes only. It is not a substitute for professional human review or advice.
-
-**AI Usage Disclaimer:** This application utilizes Artificial Intelligence (AI) models, specifically Google's Gemini or OpenAI, to process and analyze the provided information. As with all AI technologies, there may be instances of inaccuracies, biases, or incomplete information in the generated responses. Users are encouraged to exercise their own judgment and discretion when interpreting the results.
-
-**No Guarantee of Employment:** The use of this ATS Resume Scanner does not guarantee job interviews, offers of employment, or any specific career outcomes. Its purpose is to assist in optimizing resumes for ATS systems and provide insights.
-
----
-## LSM WordPress Plugin Integration (Conceptual)
-
-To integrate this functionality into a WordPress plugin, you would typically:
-1.  **Develop a WordPress Plugin:** Create a custom WordPress plugin structure.
-2.  **Embed Streamlit (Recommended):** Embed the Streamlit app using an iframe. This is the simplest way to get a complex Python app into WordPress.
-3.  **User Interface (WordPress):** Design a basic WordPress page or post to contain the iframe.
-4.  **API Key Management (Streamlit):** Securely manage your Google Gemini and OpenAI API keys within your Streamlit deployment (e.g., Streamlit Cloud secrets).
